@@ -106,21 +106,24 @@
         
         function lerak(a){
           for(let i=0;i< negyzet.length;i++) {
-            if(negyzet[a].textContent == ""){
+            if(gyozelem(jelenlegijatekos)) {
+              document.getElementById("szoveg").innerHTML="Vége a játéknak! "+jelenlegijatekos+" nyert!";
+                return;
+            }
+            else if(negyzet[a].textContent == ""){
               if(jelenlegijatekos==jatekosok[0]) {
+                
                 negyzet[a].textContent = "X";
                 jelenlegijatekos=jatekosok[1]; 
+               
               }
               else if(jelenlegijatekos==jatekosok[1]){
                 negyzet[a].textContent = "O";
                 jelenlegijatekos=jatekosok[0];
+                
               }
             }
           }
-          if(gyozelem(jelenlegijatekos)) {
-              document.getElementById("szoveg").innerHTML="Vége a játéknak! "+jelenlegijatekos+" nyert!"
-                return;
-            }
             if(dontetlen()) {
               document.getElementById("szoveg").innerHTML="Döntetlen!";
                 return;
@@ -144,7 +147,6 @@
       }
       return false
     }
-
     function dontetlen(){
         for(let i = 0; i < negyzet.length; i++) {
             if(negyzet[i].textContent == "") {
