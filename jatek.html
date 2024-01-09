@@ -108,6 +108,7 @@
           for(let i=0;i< negyzet.length;i++) {
             if(gyozelem(jelenlegijatekos)) {
               document.getElementById("szoveg").innerHTML="Vége a játéknak! "+jelenlegijatekos+" nyert!";
+              
                 return;
             }
             else if(negyzet[a].textContent == ""){
@@ -142,6 +143,9 @@
       for(let i = 0; i < nyerokonbinaciok.length; i++){
           let [a, b, c] = nyerokonbinaciok[i]
           if(negyzet[a].textContent == jelenlegijatekos && negyzet[b].textContent == jelenlegijatekos && negyzet[c].textContent == jelenlegijatekos){
+            negyzet[a].style.backgroundColor = "lightgreen";
+            negyzet[b].style.backgroundColor = "lightgreen";
+            negyzet[c].style.backgroundColor = "lightgreen";
               return true
           }
       }
