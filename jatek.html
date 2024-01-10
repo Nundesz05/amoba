@@ -5,39 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&family=Roboto+Serif&display=swap" rel="stylesheet">
+    <link rel="icon" href="icon.png">
     <title>Amőba</title>
     <style>
         body {
-            background-color: burlywood;
             margin: 0px auto;
             background-image: url("hatter.jpg");
         }
-        #main {
-            width: 800px;
-            margin: auto;
-            position:static;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            border: 2px solid grey;
-            padding: 10px;
-            color: white;
-            font-family:Verdana, Geneva, Tahoma, sans-serif;
-            font-size: large;
-            text-align: justify;
-            font-weight: bold;
-            line-height: 25px;  
-            backdrop-filter: blur(10px);
-        }
+
         ul {
           list-style-type: none;
           margin: 0;
           padding: 0;
           overflow:hidden;
-          background-color: #333;
+          text-align: center;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(10px);
+          font-family:Verdana, Geneva, Tahoma, sans-serif;
+          
         }
         
-        li {
-          float: left;
+        li { 
+          float: none;
+          display: inline-block;
+
         }
         
         li a {
@@ -49,15 +40,18 @@
         }
         
         li a:hover {
-          background-color: #111;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(10px);
         }
         #tabla {
-            margin:  50px auto 25px auto;
+            margin:  0px auto 25px auto;
             width: 375px;
             height: 375px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            
             grid-gap: 5px;
+            position: relative;
         }
         
         .negyzet {
@@ -74,7 +68,12 @@
         .negyzet:hover {
             background-color: #FFFFE0;
         }
-        #restartButton {
+        #restart{
+          display: inline;
+          
+        }
+
+        #gombok {
             display: block;
             margin: 0px auto;
             height: 40px;
@@ -86,7 +85,7 @@
             font-weight: bold
         }
 
-        #restartButton:hover {
+        #gombok:hover {
             background-color: #000000;
             color: #FFFFFF;
         }
@@ -95,16 +94,35 @@
           margin: 10px 0px;
           color: white;
           font-family:Verdana, Geneva, Tahoma, sans-serif;
-            font-size: large;
-            font-weight: bold;
+          font-size: large;
+          font-weight: bold;
         }
+        #szamlalo{
+          width: 375px;
+          margin: 10px auto;
+          color: white;
+          font-family:Verdana, Geneva, Tahoma, sans-serif;
+          font-weight: bold;
+        }
+        #szamlalo1{
+          float: left;
+          
+        }
+        #szamlalo2 {
+          float: right;
+        }
+        
     </style>
     <script>
+      let player1 = 0;
+      let player2 = 0;
       const tabla = document.getElementById('tabla');
       const negyzet = document.getElementsByClassName('negyzet');
       const szoveg = document.getElementById('szoveg');
       let jatekosok=['X','O'];
       let jelenlegijatekos = jatekosok[0];
+      let jatekosnevek=["Player1","Player2"];
+      let jatekos=jatekosnevek[0];
       const nyerokonbinaciok=[
         [0, 1, 2],
         [3, 4, 5],
@@ -125,18 +143,23 @@
                   negyzet[a].textContent = "X";
                  
                   if(gyozelem()){
-                     return;
+                    player1++;
+                    document.getElementById("player1score").innerHTML=player1; 
+                    return;
                     } 
                   jelenlegijatekos=jatekosok[1]; 
+                  jatekos=jatekosnevek[1];
                 
                 }
                 else if(jelenlegijatekos==jatekosok[1]){
                   negyzet[a].textContent = "O";
-               ;
                   if(gyozelem()){
+                   player2++
+                   document.getElementById("player2score").innerHTML=player2;
                    return;
                     }
                   jelenlegijatekos=jatekosok[0];
+                  jatekos=jatekosnevek[0];
                   
                 }
               }
@@ -147,9 +170,9 @@
               return;
           }
         if(jelenlegijatekos == jatekosok[0]) {
-            document.getElementById("szoveg").innerHTML="X Következik!"
+            document.getElementById("szoveg").innerHTML=jatekos+" Következik!"
           } else {
-            document.getElementById("szoveg").innerHTML="O Következik!"
+            document.getElementById("szoveg").innerHTML=jatekos+" Következik!"
           }   
       }
         
@@ -159,7 +182,8 @@
       for(let i = 0; i < nyerokonbinaciok.length; i++){
           let [a, b, c] = nyerokonbinaciok[i];
           if(negyzet[a].textContent==jelenlegijatekos && negyzet[b].textContent==jelenlegijatekos && negyzet[c].textContent==jelenlegijatekos){
-            document.getElementById("szoveg").innerHTML="Vége a játéknak! "+jelenlegijatekos+" nyert!";
+            document.getElementById("szoveg").innerHTML="Vége a játéknak! "+jatekos+" nyert!";
+            
             negyzet[a].style.backgroundColor = "lightgreen";
             negyzet[b].style.backgroundColor = "lightgreen";
             negyzet[c].style.backgroundColor = "lightgreen";
@@ -185,22 +209,52 @@
             negyzet[i].textContent = "";
             negyzet[i].style.backgroundColor = "";   
         }
-        document.getElementById("szoveg").innerHTML="X Következik!";
+        jatekos=jatekosnevek[0];
+        document.getElementById("szoveg").innerHTML=jatekos+" Kezd!";
+        jelenlegijatekos = jatekosok[0];   
+        player1=0;
+        player2=0;
+        document.getElementById("player1score").innerHTML=player1; 
+        document.getElementById("player2score").innerHTML=player2; 
+        
+    }
+    function ujkor() {
+        for(let i = 0; i < negyzet.length; i++) {
+            negyzet[i].textContent = "";
+            negyzet[i].style.backgroundColor = "";   
+        }
+        jatekos=jatekosnevek[0];
+        document.getElementById("szoveg").innerHTML=jatekos+" Kezd!";
         jelenlegijatekos = jatekosok[0];
         
     }
+    function start() {
+      document.getElementById("main").style.filter= "blur(0px)";
+    }
+
+  
   
     </script>
 </head>
 <body>
-    
-    <ul>
+  
+  <div id="main">
+   
+      <ul>
         <li><a class="active" href="main.html">Leírás</a></li>
         <li><a href="jatek.html">Játék</a></li>
         <li><a href="keszitok.html">Készítők</a></li>
       </ul>
     
-      <div id="tabla">
+
+  
+      <div id="szamlalo">
+        <div id="szamlalo1">Player1[X]: <span id="player1score">0</span></div>
+        <div id="szamlalo2">Player2[O]: <span id="player2score">0</span></div>
+      </div>
+    
+    
+      <div  id="tabla">
         <div class="negyzet" id="negyzet0" onclick="lerak(0)"></div>
         <div class="negyzet" id="negyzet1" onclick="lerak(1)"></div>
         <div class="negyzet" id="negyzet2" onclick="lerak(2)"></div>
@@ -210,10 +264,15 @@
         <div class="negyzet" id="negyzet6" onclick="lerak(6)"></div>
         <div class="negyzet" id="negyzet7" onclick="lerak(7)"></div>
         <div class="negyzet" id="negyzet8" onclick="lerak(8)"></div>
-    </div>  
-    <div id="szoveg">X Következik!</div>
+      </div>  
+    
+    <div id="szoveg">Player1 Kezd!</div>
     <div id="restart">
-        <input type="button" value="Újrakezd" id="restartButton" onclick="restartButton()">
+        <input type="button" value="Újkör" id="gombok" onclick="ujkor()">
+        <br>
+        <input type="button" value="Újrakezd" id="gombok" onclick="restartButton()">
     </div>
+  
+  
 </body>
 </html>
